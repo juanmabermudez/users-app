@@ -10,7 +10,7 @@ from assembly import (
     build_get_pets_use_case,
     build_update_pet_use_case,
 )
-from domain.models.pet import Pet
+from users_app.src.domain.models.user import Pet
 from domain.use_cases.base_use_case import BaseUseCase
 from errors import PetNotFoundError
 

@@ -1,7 +1,7 @@
 from typing import List
 
 from users_app.src.domain.models.user import Pet
-from domain.ports.pet_repository_port import PetRepositoryPort
+from users_app.src.domain.ports.user_repository_port import PetRepositoryPort
 from domain.use_cases.base_use_case import BaseUseCase
 
 

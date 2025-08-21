@@ -4,7 +4,7 @@ from typing import List, Optional
 from users_app.src.domain.models.user import Pet
 
 
-class UserRepositoryPort(ABC):
+class RepositoryPort(ABC):
     """Pet repository interface."""
 
     @abstractmethod

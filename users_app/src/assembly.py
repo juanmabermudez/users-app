@@ -1,10 +1,10 @@
-from adapters.memory.pet_repository_adapter import InMemoryPetRepositoryAdapter
+from users_app.src.adapters.memory.user_repository_adapter import InMemoryPetRepositoryAdapter
 from domain.use_cases.base_use_case import BaseUseCase
-from domain.use_cases.create_pet_use_case import CreatePetUseCase
-from domain.use_cases.delete_pet_use_case import DeletePetUseCase
-from domain.use_cases.get_pet_use_case import GetPetUseCase
-from domain.use_cases.get_pets_use_case import GetAllPetsUseCase
-from domain.use_cases.update_pet_use_case import UpdatePetUseCase
+from users_app.src.domain.use_cases.create_user_use_case import CreatePetUseCase
+from users_app.src.domain.use_cases.delete_user_use_case import DeletePetUseCase
+from users_app.src.domain.use_cases.get_user_use_case import GetPetUseCase
+from users_app.src.domain.use_cases.get_users_use_case import GetAllPetsUseCase
+from users_app.src.domain.use_cases.update_user_use_case import UpdatePetUseCase
 
 repository: InMemoryPetRepositoryAdapter = InMemoryPetRepositoryAdapter()
 
