@@ -1,44 +1,44 @@
 from typing import Dict, List, Optional
 
-from users_app.src.domain.models.user import Pet
-from users_app.src.domain.ports.user_repository_port import PetRepositoryPort
-from errors import PetNotFoundError
+from domain.models.user import User
+from domain.ports.user_repository_port import UserRepositoryPort
+from errors import UserNotFoundError
 
 
-class InMemoryPetRepositoryAdapter(PetRepositoryPort):
-    """In memory implementation of PetRepository."""
+class InMemoryUserRepositoryAdapter(UserRepositoryPort):
+    """In memory implementation of UserRepository."""
 
-    memory_store: Dict[int, Pet] = {}
+    memory_store: Dict[int, User] = {}
 
     def sequence(self) -> int:
         """Generate a new sequence number."""
         return len(self.memory_store) + 1
 
-    def create(self, pet: Pet) -> Pet:
-        """Create a new pet."""
-        pet.id = self.sequence()
-        self.memory_store[pet.id] = pet
-        return pet
+    def create(self, user: User) -> User:
+        """Create a new user."""
+        user.id = self.sequence()
+        self.memory_store[user.id] = user
+        return user
 
-    def get_by_id(self, pet_id: int) -> Optional[Pet]:
-        """Get pet by ID."""
-        return self.memory_store.get(pet_id)
+    def get_by_id(self, user_id: int) -> Optional[User]:
+        """Get user by ID."""
+        return self.memory_store.get(user_id)
 
-    def get_all(self) -> List[Pet]:
-        """Get all pets."""
+    def get_all(self) -> List[User]:
+        """Get all users."""
         return list(self.memory_store.values())
 
-    def update(self, pet: Pet) -> Pet:
-        """Update an existing pet."""
-        if pet.id not in self.memory_store:
-            raise PetNotFoundError(f"Pet with id {pet.id} not found")
-        self.memory_store[pet.id] = pet
-        return pet
+    def update(self, user: User) -> User:
+        """Update an existing user."""
+        if user.id not in self.memory_store:
+            raise UserNotFoundError(f"User with id {user.id} not found")
+        self.memory_store[user.id] = user
+        return user
 
-    def delete(self, pet_id: int) -> Pet:
-        """Delete a pet."""
-        if pet_id not in self.memory_store:
-            raise PetNotFoundError(f"Pet with id {pet_id} not found")
-        pet = self.memory_store[pet_id]
-        del self.memory_store[pet_id]
-        return pet
+    def delete(self, user_id: int) -> User:
+        """Delete a user."""
+        if user_id not in self.memory_store:
+            raise UserNotFoundError(f"User with id {user_id} not found")
+        user = self.memory_store[user_id]
+        del self.memory_store[user_id]
+        return user

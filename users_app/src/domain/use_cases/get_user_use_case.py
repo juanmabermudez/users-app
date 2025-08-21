@@ -1,13 +1,13 @@
-from users_app.src.domain.models.user import Pet
-from users_app.src.domain.ports.user_repository_port import PetRepositoryPort
+from domain.models.user import User
+from domain.ports.user_repository_port import UserRepositoryPort
 from domain.use_cases.base_use_case import BaseUseCase
 
 
-class GetPetUseCase(BaseUseCase):
-    """Use case for getting a pet."""
+class GetUserUseCase(BaseUseCase):
+    """Use case for getting a user."""
 
-    def __init__(self, pet_repository: PetRepositoryPort):
-        self.pet_repository = pet_repository
+    def __init__(self, user_repository: UserRepositoryPort):
+        self.user_repository = user_repository
 
-    def execute(self, pet_id: int) -> Pet:
-        return self.pet_repository.get_by_id(pet_id)
+    def execute(self, user_id: int) -> User:
+        return self.user_repository.get_by_id(user_id)

@@ -1,4 +1,4 @@
-class PetNotFoundError(Exception):
+class UserNotFoundError(Exception):
     """Exception raised when a pet is not found."""
 
     pass

@@ -1,34 +1,34 @@
-from users_app.src.adapters.memory.user_repository_adapter import InMemoryPetRepositoryAdapter
+from adapters.memory.user_repository_adapter import InMemoryUserRepositoryAdapter
 from domain.use_cases.base_use_case import BaseUseCase
-from users_app.src.domain.use_cases.create_user_use_case import CreatePetUseCase
-from users_app.src.domain.use_cases.delete_user_use_case import DeletePetUseCase
-from users_app.src.domain.use_cases.get_user_use_case import GetPetUseCase
-from users_app.src.domain.use_cases.get_users_use_case import GetAllPetsUseCase
-from users_app.src.domain.use_cases.update_user_use_case import UpdatePetUseCase
+from domain.use_cases.create_user_use_case import CreateUserUseCase
+from domain.use_cases.delete_user_use_case import DeleteUserUseCase
+from domain.use_cases.get_user_use_case import GetUserUseCase
+from domain.use_cases.get_users_use_case import GetAllUsersUseCase
+from domain.use_cases.update_user_use_case import UpdateUserUseCase
 
-repository: InMemoryPetRepositoryAdapter = InMemoryPetRepositoryAdapter()
-
-
-def build_create_pet_use_case() -> BaseUseCase:
-    """Get create pet use case."""
-    return CreatePetUseCase(repository)
+repository: InMemoryUserRepositoryAdapter = InMemoryUserRepositoryAdapter()
 
 
-def build_get_pet_use_case() -> BaseUseCase:
-    """Get pet use case."""
-    return GetPetUseCase(repository)
+def build_create_user_use_case() -> BaseUseCase:
+    """Get create user use case."""
+    return CreateUserUseCase(repository)
 
 
-def build_get_pets_use_case() -> BaseUseCase:
-    """Get pets use case."""
-    return GetAllPetsUseCase(repository)
+def build_get_user_use_case() -> BaseUseCase:
+    """Get user use case."""
+    return GetUserUseCase(repository)
 
 
-def build_update_pet_use_case() -> BaseUseCase:
-    """Update pet use case."""
-    return UpdatePetUseCase(repository)
+def build_get_users_use_case() -> BaseUseCase:
+    """Get users use case."""
+    return GetAllUsersUseCase(repository)
 
 
-def build_delete_pet_use_case() -> BaseUseCase:
-    """Get delete pet use case."""
-    return DeletePetUseCase(repository)
+def build_update_user_use_case() -> BaseUseCase:
+    """Update user use case."""
+    return UpdateUserUseCase(repository)
+
+
+def build_delete_user_use_case() -> BaseUseCase:
+    """Get delete user use case."""
+    return DeleteUserUseCase(repository)

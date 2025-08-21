@@ -1,33 +1,33 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from users_app.src.domain.models.user import Pet
+from domain.models.user import User
 
 
-class RepositoryPort(ABC):
-    """Pet repository interface."""
+class UserRepositoryPort(ABC):
+    """User repository interface."""
 
     @abstractmethod
-    def create(self, pet: Pet) -> Pet:
-        """Create a new pet."""
+    def create(self, user: User) -> User:
+        """Create a new user."""
         pass
 
     @abstractmethod
-    def get_by_id(self, pet_id: int) -> Optional[Pet]:
-        """Get pet by ID."""
+    def get_by_id(self, user_id: int) -> Optional[User]:
+        """Get user by ID."""
         pass
 
     @abstractmethod
-    def get_all(self) -> List[Pet]:
-        """Get all pets."""
+    def get_all(self) -> List[User]:
+        """Get all users."""
         pass
 
     @abstractmethod
-    def update(self, pet: Pet) -> Pet:
-        """Update an existing pet."""
+    def update(self, user: User) -> User:
+        """Update an existing user."""
         pass
 
     @abstractmethod
-    def delete(self, pet_id: int) -> Pet:
-        """Delete a pet."""
+    def delete(self, user_id: int) -> User:
+        """Delete user."""
         pass
