@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -23,15 +24,23 @@ def health_check():
     return "pong"
 
 
-@router.post("/", response_model=User)
+@router.post("/", response_model=User, status_code=201)
 def create_user(user: User, use_case: BaseUseCase = Depends(build_create_user_use_case)):
     """Create a new user."""
     try:
-        return use_case.execute(user)
+        created_user = use_case.execute(user)
+        created_at = datetime.utcnow()
+        return JSONResponse(
+            status_code=201,
+            content={
+                "id": created_user.id,
+                "createdAt": created_at.isoformat()
+            }
+        )
     except UserAlreadyExistsError as err:
         return JSONResponse({"error": str(err)}, status_code=412)
     except UserNotFoundError as err:
-        return JSONResponse({"error": str(err)}, status_code=412)
+        return JSONResponse({"error": str(err)}, status_code=404)
 
 
 @router.get("/{user_id}", response_model=User)
