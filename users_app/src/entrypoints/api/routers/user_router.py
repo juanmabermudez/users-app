@@ -12,7 +12,7 @@ from assembly import (
 )
 from domain.models.user import User
 from domain.use_cases.base_use_case import BaseUseCase
-from errors import UserNotFoundError
+from errors import UserNotFoundError, UserAlreadyExistsError
 
 router = APIRouter(prefix="/users")
 
@@ -26,7 +26,12 @@ def health_check():
 @router.post("/", response_model=User)
 def create_user(user: User, use_case: BaseUseCase = Depends(build_create_user_use_case)):
     """Create a new user."""
-    return use_case.execute(user)
+    try:
+        return use_case.execute(user)
+    except UserAlreadyExistsError as err:
+        return JSONResponse({"error": str(err)}, status_code=412)
+    except UserNotFoundError as err:
+        return JSONResponse({"error": str(err)}, status_code=412)
 
 
 @router.get("/{user_id}", response_model=User)

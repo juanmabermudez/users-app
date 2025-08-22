@@ -2,7 +2,7 @@ from typing import Dict, List, Optional
 
 from domain.models.user import User
 from domain.ports.user_repository_port import UserRepositoryPort
-from errors import UserNotFoundError
+from errors import UserAlreadyExistsError, UserNotFoundError
 
 
 class InMemoryUserRepositoryAdapter(UserRepositoryPort):
@@ -16,6 +16,10 @@ class InMemoryUserRepositoryAdapter(UserRepositoryPort):
 
     def create(self, user: User) -> User:
         """Create a new user."""
+        # Validación de username y email únicos
+        for existing_user in self.memory_store.values():
+            if existing_user.username == user.username or existing_user.email == user.email:
+                raise UserAlreadyExistsError("Username or email already exists")
         user.id = self.sequence()
         self.memory_store[user.id] = user
         return user
