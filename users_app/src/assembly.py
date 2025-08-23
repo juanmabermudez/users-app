@@ -5,30 +5,55 @@ from domain.use_cases.delete_user_use_case import DeleteUserUseCase
 from domain.use_cases.get_user_use_case import GetUserUseCase
 from domain.use_cases.get_users_use_case import GetAllUsersUseCase
 from domain.use_cases.update_user_use_case import UpdateUserUseCase
+from domain.use_cases.authenticate_user_use_case import AuthenticateUserUseCase
+from domain.use_cases.count_users_use_case import CountUsersUseCase
+from domain.use_cases.get_current_user_use_case import GetCurrentUserUseCase
+from domain.use_cases.reset_users_use_case import ResetUsersUseCase
 
-repository: InMemoryUserRepositoryAdapter = InMemoryUserRepositoryAdapter()
+# Instancia única global
+user_repository = InMemoryUserRepositoryAdapter()
+auth_use_case = AuthenticateUserUseCase(user_repository)
 
 
 def build_create_user_use_case() -> BaseUseCase:
     """Get create user use case."""
-    return CreateUserUseCase(repository)
+    return CreateUserUseCase(user_repository)
 
 
 def build_get_user_use_case() -> BaseUseCase:
     """Get user use case."""
-    return GetUserUseCase(repository)
+    return GetUserUseCase(user_repository)
 
 
 def build_get_users_use_case() -> BaseUseCase:
     """Get users use case."""
-    return GetAllUsersUseCase(repository)
+    return GetAllUsersUseCase(user_repository)
 
 
 def build_update_user_use_case() -> BaseUseCase:
     """Update user use case."""
-    return UpdateUserUseCase(repository)
+    return UpdateUserUseCase(user_repository)
 
 
 def build_delete_user_use_case() -> BaseUseCase:
     """Get delete user use case."""
-    return DeleteUserUseCase(repository)
+    return DeleteUserUseCase(user_repository)
+
+
+def build_authenticate_user_use_case() -> AuthenticateUserUseCase:
+    """Get authenticate user use case."""
+    return auth_use_case  # devuelve la misma instancia
+
+
+def build_count_users_use_case() -> CountUsersUseCase:
+    """Get count users use case."""
+    return CountUsersUseCase(user_repository)
+
+
+def build_get_current_user_use_case() -> GetCurrentUserUseCase:
+    return GetCurrentUserUseCase(auth_use_case)
+
+
+def build_reset_users_use_case() -> ResetUsersUseCase:
+    return ResetUsersUseCase(user_repository)
+

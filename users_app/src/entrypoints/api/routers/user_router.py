@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import List
+from pydantic import BaseModel
 
-from fastapi import APIRouter, Depends, HTTPException, Body
+from fastapi import APIRouter, Depends, HTTPException, Body, Header
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 from assembly import (
@@ -10,10 +11,17 @@ from assembly import (
     build_get_user_use_case,
     build_get_users_use_case,
     build_update_user_use_case,
+    build_authenticate_user_use_case,
+    build_count_users_use_case,
+    build_get_current_user_use_case,
+    build_reset_users_use_case,
 )
 from domain.models.user import User
 from domain.models.user_patch import UserPatch
+from domain.models.token_request import TokenRequest
+from domain.models.token_response import TokenResponse
 from domain.use_cases.base_use_case import BaseUseCase
+from domain.use_cases.authenticate_user_use_case import AuthenticateUserUseCase
 from errors import UserNotFoundError, UserAlreadyExistsError
 
 router = APIRouter(prefix="/users")
@@ -24,6 +32,32 @@ def health_check():
     """Healthcheck endpoint."""
     return "pong"
 
+class CountResponse(BaseModel):
+    count: int
+
+@router.get("/count", response_model=CountResponse)
+def count_users(use_case=Depends(build_count_users_use_case)):
+    total = use_case.execute()
+    return {"count": total}
+
+@router.get("/me", response_model=User)
+def get_current_user(
+    authorization: str = Header(None),
+    use_case=Depends(build_get_current_user_use_case)
+):
+    if not authorization:
+        raise HTTPException(status_code=403, detail="Token requerido")
+    
+    token = authorization.replace("Bearer ", "")
+    try:
+        user = use_case.execute(token)
+        return user
+    except UserNotFoundError as e:
+        raise HTTPException(status_code=401, detail=str(e))
+    
+@router.post("/reset")
+def reset_users(use_case=Depends(build_reset_users_use_case)):
+    return use_case.execute()
 
 @router.post("/", response_model=User, status_code=201)
 def create_user(user: User, use_case: BaseUseCase = Depends(build_create_user_use_case)):
@@ -42,7 +76,7 @@ def create_user(user: User, use_case: BaseUseCase = Depends(build_create_user_us
         return JSONResponse({"error": str(err)}, status_code=412)
     except UserNotFoundError as err:
         return JSONResponse({"error": str(err)}, status_code=404)
-
+    
 
 @router.get("/{user_id}", response_model=User)
 def get_user(user_id: int, use_case: BaseUseCase = Depends(build_get_user_use_case)):
@@ -112,3 +146,28 @@ def patch_user(
             status_code=404,
             content={"error": "Usuario no encontrado"}
         )
+
+
+@router.post("/auth", response_model=TokenResponse)
+def generate_token(
+    body: TokenRequest,
+    use_case: AuthenticateUserUseCase = Depends(build_authenticate_user_use_case)
+):
+    if not body.username or not body.password:
+        return JSONResponse(
+            status_code=400,
+            content={"error": "Faltan campos requeridos"}
+        )
+    try:
+        return use_case.execute(body.username, body.password)
+    except UserNotFoundError:
+        return JSONResponse(
+            status_code=404,
+            content={"error": "Usuario no encontrado"}
+        )
+
+
+@router.get("/count")
+def count_users(use_case=Depends(build_count_users_use_case)):
+    count = use_case.execute()
+    return {"count": count}

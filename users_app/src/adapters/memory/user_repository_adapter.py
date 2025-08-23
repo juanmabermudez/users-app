@@ -46,3 +46,7 @@ class InMemoryUserRepositoryAdapter(UserRepositoryPort):
         user = self.memory_store[user_id]
         del self.memory_store[user_id]
         return user
+    
+    def clear_all(self):
+        self.memory_store.clear()
+        self._id_counter = 1

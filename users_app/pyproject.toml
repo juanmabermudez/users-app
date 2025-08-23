@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pets_app"
+name = "users_app"
 version = "1.0.0"
 description = "Proyecto guía para talleres y ejemplos."
 authors = [
