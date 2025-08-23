@@ -1,0 +1,36 @@
+team:
+  name: "Equipo Cloud Native"
+  members:
+    - user: "juanm"
+      percentage: 100
+  # Agregar más miembros según corresponda
+board: "https://github.com/juanm/users-app/projects/1"
+docs: "https://juanm.github.io/users-app"
+
+users_app:
+  folder: users_app
+  image_name: users-app-image
+  image_tag: v1.0.0
+  authors:
+    - "juanm"
+
+posts_app:
+  folder: posts_app
+  image_name: posts-app-image
+  image_tag: v1.0.0
+  authors:
+    - "equipo_posts"
+
+offers_app:
+  folder: offers_app
+  image_name: offers-app-image
+  image_tag: v1.0.0
+  authors:
+    - "equipo_offers"
+
+routes_app:
+  folder: routes_app
+  image_name: routes-app-image
+  image_tag: v1.0.0
+  authors:
+    - "equipo_routes"
