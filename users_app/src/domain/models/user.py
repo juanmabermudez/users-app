@@ -13,3 +13,4 @@ class User(BaseModel):
     dni: str = Field(min_length=1, description="Identificación")
     fullName: str = Field(min_length=1, description="Nombre completo del usuario")
     phoneNumber: str = Field(min_length=1, description="Número de teléfono")
+    status: str = Field(default="POR_VERIFICAR", description="Estado del usuario")

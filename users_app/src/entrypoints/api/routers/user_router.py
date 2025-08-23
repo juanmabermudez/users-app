@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 from assembly import (
@@ -12,6 +12,7 @@ from assembly import (
     build_update_user_use_case,
 )
 from domain.models.user import User
+from domain.models.user_patch import UserPatch
 from domain.use_cases.base_use_case import BaseUseCase
 from errors import UserNotFoundError, UserAlreadyExistsError
 
@@ -77,3 +78,37 @@ def delete_user(user_id: int, use_case: BaseUseCase = Depends(build_delete_user_
         return use_case.execute(user_id)
     except UserNotFoundError as err:
         return JSONResponse({"error": str(err)}, status_code=404)
+
+
+@router.patch("/{user_id}")
+def patch_user(
+    user_id: str,
+    body: UserPatch = Body(...),
+    use_case: BaseUseCase = Depends(build_update_user_use_case)
+):
+    # Intentar convertir a entero
+    try:
+        user_id_int = int(user_id)
+    except ValueError:
+        return JSONResponse(
+            status_code=404,
+            content={"error": "Usuario no encontrado"}
+        )
+
+    update_data = body.dict(exclude_unset=True)
+    if not update_data:
+        return JSONResponse(
+            status_code=400,
+            content={"error": "Debe enviar al menos uno de los campos esperados: fullName, phoneNumber, dni, status"}
+        )
+    try:
+        use_case.execute(user_id_int, update_data)
+        return JSONResponse(
+            status_code=200,
+            content={"msg": "el usuario ha sido actualizado"}
+        )
+    except UserNotFoundError:
+        return JSONResponse(
+            status_code=404,
+            content={"error": "Usuario no encontrado"}
+        )

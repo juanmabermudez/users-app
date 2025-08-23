@@ -15,6 +15,7 @@ def test_create_user_with_valid_data(valid_user_data):
     assert user.dni == valid_user_data["dni"]
     assert user.fullName == valid_user_data["fullName"]
     assert user.phoneNumber == valid_user_data["phoneNumber"]
+    assert user.status == "POR_VERIFICAR"
 
 
 def test_create_user_with_id(user_with_id):
@@ -26,56 +27,25 @@ def test_create_user_with_id(user_with_id):
     assert user_with_id.dni == "223432345"
     assert user_with_id.fullName == "Pedro Alicante"
     assert user_with_id.phoneNumber == "3123452342"
+    assert user_with_id.status == "POR_VERIFICAR"
 
 
-def test_create_user_with_invalid_type(valid_user_data):
-    """Test creating a user with an invalid type."""
-    with pytest.raises(ValidationError) as exc_info:
-        User(**{**valid_user_data, "type": "invalid_type"})  # type: ignore
-
-    assert "type" in str(exc_info.value)
-    assert "Input should be" in str(exc_info.value)
+def test_create_user_with_missing_fields():
+    """Test creating a user with missing required fields."""
+    with pytest.raises(ValidationError):
+        User(username="user", password="pass")  # faltan campos obligatorios
 
 
-def test_create_user_with_negative_age(valid_user_data):
-    """Test creating a user with a negative age."""
-    with pytest.raises(ValidationError) as exc_info:
-        User(**{**valid_user_data, "age": -1})
-
-    assert "age" in str(exc_info.value)
-    assert "Input should be greater than 0" in str(exc_info.value)
+def test_create_user_with_invalid_email(valid_user_data):
+    """Test creating a user with an invalid email."""
+    with pytest.raises(ValidationError):
+        User(**{**valid_user_data, "email": "not-an-email"})
 
 
-def test_create_user_with_empty_name(valid_user_data):
-    """Test creating a user with an empty name."""
-    with pytest.raises(ValidationError) as exc_info:
-        User(**{**valid_user_data, "name": ""})
-
-    assert "name" in str(exc_info.value)
-    assert "String should have at least 1 character" in str(exc_info.value)
-
-
-def test_create_user_with_empty_owner_name(valid_user_data):
-    """Test creating a user with an empty owner name."""
-    with pytest.raises(ValidationError) as exc_info:
-        User(**{**valid_user_data, "owner_name": ""})
-
-    assert "owner_name" in str(exc_info.value)
-    assert "String should have at least 1 character" in str(exc_info.value)
-
-
-def test_create_user_with_none_values():
-    """Test creating a user with None values for required fields."""
-    with pytest.raises(ValidationError) as exc_info:
-        User(
-            name=None,  # type: ignore
-            age=None,  # type: ignore
-            owner_name=None,  # type: ignore
-        )
-
-    assert "name" in str(exc_info.value)
-    assert "age" in str(exc_info.value)
-    assert "owner_name" in str(exc_info.value)
+def test_create_user_with_empty_username(valid_user_data):
+    """Test creating a user with an empty username."""
+    with pytest.raises(ValidationError):
+        User(**{**valid_user_data, "username": ""})
 
 
 def test_create_user_with_extra_fields(valid_user_data):
@@ -85,18 +55,52 @@ def test_create_user_with_extra_fields(valid_user_data):
     assert not hasattr(user, "extra_field")
 
 
-def test_user_model_equality(user_with_id):
+def test_user_model_equality():
     """Test user model equality."""
-    user2 = User(id=1, name="Rex", age=5, owner_name="John Doe")
+    user1 = User(
+        id=1,
+        username="jtapia",
+        password="password123",
+        email="tapia23@gmail.com",
+        dni="223432345",
+        fullName="Pedro Alicante",
+        phoneNumber="3123452342",
+    )
+    user2 = User(
+        id=1,
+        username="jtapia",
+        password="password123",
+        email="tapia23@gmail.com",
+        dni="223432345",
+        fullName="Pedro Alicante",
+        phoneNumber="3123452342",
+    )
 
-    assert user_with_id == user2
+    assert user1 == user2
 
 
-def test_user_model_inequality(user_with_id):
+def test_user_model_inequality():
     """Test user model inequality."""
-    user2 = User(id=2, name="Rex", age=5, owner_name="John Doe")
+    user1 = User(
+        id=1,
+        username="jtapia",
+        password="password123",
+        email="tapia23@gmail.com",
+        dni="223432345",
+        fullName="Pedro Alicante",
+        phoneNumber="3123452342",
+    )
+    user2 = User(
+        id=2,
+        username="jtapia",
+        password="password123",
+        email="tapia23@gmail.com",
+        dni="223432345",
+        fullName="Pedro Alicante",
+        phoneNumber="3123452342",
+    )
 
-    assert user_with_id != user2
+    assert user1 != user2
 
 
 def test_user_model_dict_conversion(user_with_id):
@@ -104,15 +108,11 @@ def test_user_model_dict_conversion(user_with_id):
     user_dict = user_with_id.model_dump()
     assert user_dict == {
         "id": 1,
-        "name": "Rex",
-        "age": 5,
-        "owner_name": "John Doe",
+        "username": "jtapia",
+        "password": "password123",
+        "email": "tapia23@gmail.com",
+        "dni": "223432345",
+        "fullName": "Pedro Alicante",
+        "phoneNumber": "3123452342",
+        "status": "POR_VERIFICAR",
     }
-
-
-def test_user_model_json_conversion(user_with_id):
-    """Test user model conversion to JSON."""
-    user_json = user_with_id.model_dump_json()
-    assert (
-        user_json == '{"id":1,"name":"Rex","age":5,"owner_name":"John Doe"}'
-    )
