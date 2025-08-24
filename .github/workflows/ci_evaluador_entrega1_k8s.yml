@@ -1,0 +1,119 @@
+name: CI - Kubernetes Manifests Validation (Entrega 1)
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-k8s-manifests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.28.0'
+    
+    - name: Validate Kubernetes manifests syntax
+      run: |
+        # Check that k8s directory exists
+        if [ ! -d "k8s" ]; then
+          echo "❌ k8s directory not found"
+          exit 1
+        fi
+        
+        # Validate all YAML files in k8s directory
+        for file in k8s/*.yaml k8s/*.yml; do
+          if [ -f "$file" ]; then
+            echo "Validating $file..."
+            kubectl apply --dry-run=client --validate=true -f "$file" || exit 1
+            echo "✅ $file is valid"
+          fi
+        done
+    
+    - name: Check required Kubernetes resources
+      run: |
+        # Check for users-app deployment
+        if [ ! -f "k8s/users-app-deployment.yaml" ]; then
+          echo "❌ users-app-deployment.yaml not found"
+          exit 1
+        fi
+        
+        # Check for users-db deployment  
+        if [ ! -f "k8s/users-db-deployment.yaml" ]; then
+          echo "❌ users-db-deployment.yaml not found"
+          exit 1
+        fi
+        
+        # Check for network policy
+        if [ ! -f "k8s/users-network-policy.yaml" ]; then
+          echo "❌ users-network-policy.yaml not found"
+          exit 1
+        fi
+        
+        echo "✅ All required Kubernetes manifest files found"
+    
+    - name: Validate manifest content
+      run: |
+        # Check that users-app deployment has correct image reference
+        grep -q "users-app-image:v1.0.0" k8s/users-app-deployment.yaml || (echo "❌ Wrong image reference in users-app deployment" && exit 1)
+        
+        # Check that database deployment uses PostgreSQL
+        grep -q "postgres:" k8s/users-db-deployment.yaml || (echo "❌ PostgreSQL image not found in database deployment" && exit 1)
+        
+        # Check that network policy exists for database access
+        grep -q "users-db-access-policy" k8s/users-network-policy.yaml || (echo "❌ Database access policy not properly configured" && exit 1)
+        
+        # Validate service definitions
+        grep -q "users-app-service" k8s/users-app-deployment.yaml || (echo "❌ users-app service not found" && exit 1)
+        grep -q "users-db-service" k8s/users-db-deployment.yaml || (echo "❌ users-db service not found" && exit 1)
+        
+        echo "✅ Kubernetes manifest content validation passed"
+    
+    - name: Check config.yaml consistency
+      run: |
+        # Verify that image names in k8s manifests match config.yaml
+        IMAGE_NAME=$(grep "image_name:" config.yaml | grep "users-app" | cut -d':' -f2 | tr -d ' ')
+        IMAGE_TAG=$(grep "image_tag:" config.yaml | grep -A1 "users_app:" | grep "image_tag:" | cut -d':' -f2 | tr -d ' ')
+        
+        EXPECTED_IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+        
+        if grep -q "$EXPECTED_IMAGE" k8s/users-app-deployment.yaml; then
+          echo "✅ Image reference in K8s manifest matches config.yaml: $EXPECTED_IMAGE"
+        else
+          echo "❌ Image reference mismatch between config.yaml and K8s manifest"
+          echo "Expected: $EXPECTED_IMAGE"
+          echo "Found in manifest:"
+          grep "image:" k8s/users-app-deployment.yaml
+          exit 1
+        fi
+    
+    - name: Generate deployment report
+      run: |
+        echo "## Kubernetes Deployment Summary" > k8s-validation-report.md
+        echo "" >> k8s-validation-report.md
+        echo "### Validated Resources:" >> k8s-validation-report.md
+        echo "" >> k8s-validation-report.md
+        for file in k8s/*.yaml k8s/*.yml; do
+          if [ -f "$file" ]; then
+            echo "- $(basename $file)" >> k8s-validation-report.md
+          fi
+        done
+        echo "" >> k8s-validation-report.md
+        echo "### Resource Counts:" >> k8s-validation-report.md
+        echo "- Deployments: $(grep -l "kind: Deployment" k8s/*.yaml | wc -l)" >> k8s-validation-report.md
+        echo "- Services: $(grep -l "kind: Service" k8s/*.yaml | wc -l)" >> k8s-validation-report.md
+        echo "- NetworkPolicies: $(grep -l "kind: NetworkPolicy" k8s/*.yaml | wc -l)" >> k8s-validation-report.md
+        
+        cat k8s-validation-report.md
+    
+    - name: Upload validation report
+      uses: actions/upload-artifact@v3
+      with:
+        name: k8s-validation-report
+        path: k8s-validation-report.md
+        retention-days: 30
