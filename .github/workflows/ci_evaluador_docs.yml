@@ -1,0 +1,88 @@
+name: CI - Documentation and PlantUML Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Java for PlantUML
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+    
+    - name: Install PlantUML
+      run: |
+        wget -O plantuml.jar https://github.com/plantuml/plantuml/releases/download/v1.2023.13/plantuml-1.2023.13.jar
+        
+    - name: Validate PlantUML diagrams
+      run: |
+        # Check that PlantUML diagrams can be compiled
+        java -jar plantuml.jar -testdot
+        
+        # Validate entity diagram
+        if [ -f "docs/diagrams/entities.puml" ]; then
+          java -jar plantuml.jar -checkonly docs/diagrams/entities.puml
+          echo "✅ entities.puml is valid"
+        else
+          echo "❌ entities.puml not found"
+          exit 1
+        fi
+        
+        # Generate diagrams to ensure they compile
+        java -jar plantuml.jar docs/diagrams/*.puml
+    
+    - name: Check README files
+      run: |
+        # Check main README exists and has required sections
+        if [ ! -f "README.md" ]; then
+          echo "❌ Main README.md not found"
+          exit 1
+        fi
+        
+        # Check for key sections in main README
+        grep -q "Estructura del Proyecto" README.md || (echo "❌ Missing 'Estructura del Proyecto' section" && exit 1)
+        grep -q "Microservicios Implementados" README.md || (echo "❌ Missing 'Microservicios Implementados' section" && exit 1)
+        grep -q "Tecnologías Utilizadas" README.md || (echo "❌ Missing 'Tecnologías Utilizadas' section" && exit 1)
+        grep -q "Pipelines de CI/CD" README.md || (echo "❌ Missing 'Pipelines de CI/CD' section" && exit 1)
+        
+        # Check users_app README
+        if [ ! -f "users_app/README.md" ]; then
+          echo "❌ users_app/README.md not found"
+          exit 1
+        fi
+        
+        # Check for required sections in users_app README
+        grep -q "API Endpoints" users_app/README.md || (echo "❌ Missing 'API Endpoints' section in users_app README" && exit 1)
+        grep -q "Ejecución de Pruebas" users_app/README.md || (echo "❌ Missing 'Ejecución de Pruebas' section in users_app README" && exit 1)
+        
+        echo "✅ All README files validated successfully"
+    
+    - name: Check configuration files
+      run: |
+        # Check config.yaml exists and has required structure
+        if [ ! -f "config.yaml" ]; then
+          echo "❌ config.yaml not found"
+          exit 1
+        fi
+        
+        # Basic validation of config.yaml structure
+        grep -q "team:" config.yaml || (echo "❌ Missing 'team' section in config.yaml" && exit 1)
+        grep -q "users_app:" config.yaml || (echo "❌ Missing 'users_app' section in config.yaml" && exit 1)
+        
+        echo "✅ Configuration files validated successfully"
+    
+    - name: Upload generated diagrams
+      uses: actions/upload-artifact@v4
+      with:
+        name: plantuml-diagrams
+        path: docs/diagrams/*.png
+        retention-days: 30

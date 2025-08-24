@@ -1,38 +1,43 @@
+
 [tool.poetry]
 name = "users_app"
 version = "1.0.0"
 description = "Proyecto guía para talleres y ejemplos."
 authors = [
-  "César Forero <ca.forero10@uniandes.edu.co>"
+  "Juan Bermudez <jm.bermudezv1@uniandes.edu.co>"
 ]
 license = "MIT"
 readme = "README.md"
 package-mode = false
 packages = [{include = "*", from = "src"}]
 
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.116.1"
+uvicorn = {extras = ["standard"], version = "^0.35.0"}
+sqlalchemy = "^2.0.43"
+psycopg2-binary = "^2.9.10"
+pydantic = {extras = ["email"], version = "^2.11.7"}
+passlib = "^1.7.4"
+bcrypt = "^4.3.0"
+python-dotenv = "^1.1.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+ruff = "^0.11.12"
+bandit = "^1.8.3"
+flake8 = "^7.2.0"
+isort = "^6.0.1"
+pytest = "^8.4.0"
+pytest-cov = "^6.1.1"
+pytest-mock = "^3.14.1"
+pytest-env = "^1.1.5"
+faker = "^23.3.0"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.dependencies]
-python = "~3.11"
-fastapi = "~0.115.12"
-uvicorn = "~0.27.1"
-python-dotenv = "~1.0.1"
-pydantic = {extras = ["email"], version = "^2.11.7"}
-pydantic-settings = "~2.1.0 "
-
-[tool.poetry.group.dev.dependencies]
-black = "~25.1.0"
-ruff = "~0.11.12"
-bandit = "~1.8.3"
-flake8 = "~7.2.0"
-isort = "~6.0.1"
-pytest = "~8.4.0"
-pytest-cov = "~6.1.1"
-pytest-mock = "~3.14.1"
-pytest-env = "~1.1.5"
-faker = "~37.3.0"
 
 [tool.isort]
 # https://pycqa.github.io/isort/docs/configuration/black_compatibility/
@@ -74,3 +79,12 @@ testpaths = [
 env = [ # environment variables for testing
   "LOG_LEVEL = INFO"
 ]
+=======
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
+pytest-mock = "^3.14.1"
+httpx = "^0.28.1"
+coverage = "^7.10.5"
+pytest-cov = "^6.2.1"
+
+>>>>>>> main

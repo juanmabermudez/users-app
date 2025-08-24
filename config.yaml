@@ -1,37 +1,21 @@
+offers_app:
+routes_app:
 team:
-   name: Team16
-   members:
-      - user: jm.bermudezv1@uniandes.edu.co
-        percentage: 10
-      - user: s.gelvezg@uniandes.edu.co
-        percentage: 30
-      - user: a.silvar@uniandes.edu.co
-        percentage: 30
-      - user: ja.tapia911@uniandes.edu.co
-        percentage: 30
+  name: Team16
+  members:
+    - user: jm.bermudezv1@uniandes.edu.co
+      percentage: 10
+    - user: s.gelvezg@uniandes.edu.co
+      percentage: 30
+    - user: a.silvar@uniandes.edu.co
+      percentage: 30
+    - user: ja.tapia911@uniandes.edu.co
+      percentage: 30
 board: https://github.com/orgs/MISW-4301-Desarrollo-Apps-en-la-Nube/projects/288/views/1
 docs: https://solid-adventure-3jmwez8.pages.github.io/
 users_app:
   folder: users_app
-  image_name: users_app
-  image_tag: 1.0.0
-  authors:
-    - ja.tapia911
-posts_app:
-  folder: posts_app
-  image_name: posts_app
-  image_tag: 1.0.0
-  authors:
-    - a.silvar
-offers_app:
-  folder: offers_app
-  image_name: offers_app
-  image_tag: 1.0.0
+  image_name: users-app-image
+  image_tag: v1.0.0
   authors:
     - jm.bermudezv1
-routes_app:
-  folder: routes_app
-  image_name: routes_app
-  image_tag: 1.0.0
-  authors:
-    - s.gelvezg

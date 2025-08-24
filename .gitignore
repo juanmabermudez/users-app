@@ -1,16 +1,12 @@
 # Byte-compiled / optimized / DLL files
+
 __pycache__/
-*.py[codz]
+*.py[cod]
 *$py.class
 
 # C extensions
 *.so
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -20,11 +16,10 @@ parts/
 sdist/
 var/
 wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+
+# Distribution / packaging
+.Python
+build/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -35,6 +30,7 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+
 
 # Unit test / coverage reports
 htmlcov/
@@ -50,6 +46,11 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+=======
+*.py,cover
+.hypothesis/
+.pytest_cache/
+>>>>>>> main
 
 # Translations
 *.mo
@@ -72,7 +73,10 @@ instance/
 docs/_build/
 
 # PyBuilder
+<<<<<<< HEAD
 .pybuilder/
+=======
+>>>>>>> main
 target/
 
 # Jupyter Notebook
@@ -83,9 +87,13 @@ profile_default/
 ipython_config.py
 
 # pyenv
+<<<<<<< HEAD
 #   For a library or package, you might want to ignore these files since the code is
 #   intended to run in multiple environments; otherwise, check them in:
 # .python-version
+=======
+.python-version
+>>>>>>> main
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -94,6 +102,7 @@ ipython_config.py
 #   install all needed dependencies.
 #Pipfile.lock
 
+<<<<<<< HEAD
 # UV
 #   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
@@ -125,6 +134,9 @@ ipython_config.py
 .pixi
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+=======
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+>>>>>>> main
 __pypackages__/
 
 # Celery stuff
@@ -136,7 +148,10 @@ celerybeat.pid
 
 # Environments
 .env
+<<<<<<< HEAD
 .envrc
+=======
+>>>>>>> main
 .venv
 env/
 venv/
@@ -162,6 +177,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+<<<<<<< HEAD
 # pytype static type analyzer
 .pytype/
 
@@ -205,3 +221,28 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+=======
+# Poetry
+poetry.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test database
+test.db
+
+# PlantUML generated files
+docs/diagrams/*.png
+docs/diagrams/*.svg
+
+# Downloaded tools
+plantuml.jar
+kubectl
+>>>>>>> main

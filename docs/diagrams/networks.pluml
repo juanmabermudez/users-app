@@ -1,0 +1,100 @@
+@startuml
+!theme vibrant
+
+' Declaración de componentes globales
+cloud "Internet" as Internet
+package "Cluster K8s" {
+    frame "Node" {
+
+        ' Interfaces de Red (NodePort)
+        interface "Port: 30000" as NP_users
+        interface "Port: 30001" as NP_posts
+        interface "Port: 30002" as NP_routes
+        interface "Port: 30003" as NP_offers
+
+        ' Columna de la aplicación "Users"
+        package "users-network" {
+            component "users-app-service \n(NodePort)" as users_app_svc
+            node "users-app-pod" as users_app_pod {
+                component "users-app"
+            }
+            component "users-db-service \n(ClusterIP)" as users_db_svc
+            database "users-db-pod" as users_db_pod {
+                 component "users-db"
+            }
+        }
+
+        ' Columna de la aplicación "Posts"
+        package "posts-network" {
+            component "posts-app-service \n(NodePort)" as posts_app_svc
+            node "posts-app-pod" as posts_app_pod {
+                 component "posts-app"
+            }
+            component "posts-db-service \n(ClusterIP)" as posts_db_svc
+            database "posts-db-pod" as posts_db_pod {
+                 component "posts-db"
+            }
+        }
+
+        ' Columna de la aplicación "Routes"
+        package "routes-network" {
+            component "routes-app-service \n(NodePort)" as routes_app_svc
+            node "routes-app-pod" as routes_app_pod {
+                 component "routes-app"
+            }
+            component "routes-db-service \n(ClusterIP)" as routes_db_svc
+            database "routes-db-pod" as routes_db_pod {
+                 component "routes-db"
+            }
+        }
+
+        ' Columna de la aplicación "Offers"
+        package "offers-network" {
+            component "offers-app-service \n(NodePort)" as offers_app_svc
+            node "offers-app-pod" as offers_app_pod {
+                 component "offers-app"
+            }
+            component "offers-db-service \n(ClusterIP)" as offers_db_svc
+            database "offers-db-pod" as offers_db_pod {
+                 component "offers-db"
+            }
+        }
+    }
+}
+
+' --- DEFINICIÓN DE RELACIONES ---
+
+' Conexiones Externas (Internet -> NodePort -> Service)
+Internet ..> NP_users
+Internet ..> NP_posts
+Internet ..> NP_routes
+Internet ..> NP_offers
+
+NP_users --> users_app_svc : ":80"
+NP_posts --> posts_app_svc : ":80"
+NP_routes --> routes_app_svc : ":80"
+NP_offers --> offers_app_svc : ":80"
+
+' Conexiones Internas (Service -> Pod -> DB Service -> DB Pod)
+
+' Flujo de "Users"
+users_app_svc --> users_app_pod : "targetPort: xxxx"
+users_app_pod --> users_db_svc
+users_db_svc --> users_db_pod : ":5432"
+
+' Flujo de "Posts"
+posts_app_svc --> posts_app_pod : "targetPort: xxxx"
+posts_app_pod --> posts_db_svc
+posts_db_svc --> posts_db_pod : ":5432"
+
+' Flujo de "Routes"
+routes_app_svc --> routes_app_pod : "targetPort: xxxx"
+routes_app_pod --> routes_db_svc
+routes_db_svc --> routes_db_pod : ":5432"
+
+' Flujo de "Offers"
+offers_app_svc --> offers_app_pod : "targetPort: xxxx"
+offers_app_pod --> offers_db_svc
+offers_db_svc --> offers_db_pod : ":5432"
+
+@enduml

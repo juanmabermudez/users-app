@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-app-deployment
+  labels:
+    app: users-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-app
+  template:
+    metadata:
+      labels:
+        app: users-app
+    spec:
+      containers:
+        - name: users-app
+          image: users-app-image:v1.0.0 # DEBE COINCIDIR CON config.yaml
+          imagePullPolicy: IfNotPresent # Para usar imágenes locales construidas con Minikube
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://user:password@users-db-service:5432/users_db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-app-service
+  labels:
+    app: users-app
+spec:
+  selector:
+    app: users-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+      nodePort: 30000 # Puerto fijo para acceso externo
+  type: NodePort

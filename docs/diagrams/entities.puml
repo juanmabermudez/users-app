@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @startuml
 
 ' Definición de entidades
@@ -12,5 +13,77 @@ Post -up-> "1" User
 Post -right-> "1" Route
 Offer "*" -left-> "1" Post
 Offer --> "1" Score
+=======
+@startuml entities
+!theme plain
+
+title Modelo de Entidades del Sistema
+
+entity "User (usuario)" as User {
+  + id: string <<PK>>
+  --
+  username: string <<unique>>
+  email: string <<unique>>
+  password: string
+  salt: string
+  token: string
+  status: string {POR_VERIFICAR, NO_VERIFICADO, VERIFICADO}
+  fullName: string
+  phoneNumber: string
+  dni: string
+  --
+  expireAt: datetime
+  createdAt: datetime
+  updatedAt: datetime
+}
+
+entity "Route (trayecto)" as Route {
+ + id: string <<PK>>
+ --
+ flightId: string <<unique>>
+ sourceAirportCode: string
+ sourceCountry: string
+ destinyAirportCode: string
+ destinyCountry: string
+ bagCost: number
+ plannedStartDate: datetime
+ plannedEndDate: datetime
+ --
+ createdAt: datetime
+ updatedAt: datetime
+}
+
+entity "Post (publicación)" as Post {
+ + id: string <<PK>>
+ --
+ # routeId: string <<FK>>
+ # userId: string <<FK>>
+ expireAt: datetime
+ --
+ createdAt: datetime
+}
+
+entity "Offer (oferta)" as Offer {
+ + id: string <<PK>>
+ --
+ # postId: string <<FK>>
+ # userId: string <<FK>>
+ description: string
+ size: string {LARGE, MEDIUM, SMALL}
+ fragile: boolean
+ offer: number
+ --
+ createdAt: datetime
+}
+
+entity "Score (utilidad)" as Score {
+    'La entidad Score se omite en esta entrega'
+}
+
+User "1" -- "1" Post
+Post "1" -- "1" Route
+Post "1" -- "*" Offer
+Offer "1" -- "1" Score
+>>>>>>> main
 
 @enduml

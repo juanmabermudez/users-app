@@ -1,48 +1,70 @@
-name: Evaluador Pruebas Unitarias
-# Actualice este pipeline si usted decide trabajar en una tecnología diferente a Python.
+<<<<<<< HEAD
+### Archivo eliminado: no es necesario en la rama feat/apiUsuarios.
+=======
+name: CI - Unit Tests and Coverage
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main, develop ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
+
 jobs:
-  pets_app:
+  test-users-app:
     runs-on: ubuntu-latest
-    name: Verify pets_app
-    strategy:
-      fail-fast: true
+    
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.11
-      - name: Set up Poetry
-        uses: abatilo/actions-poetry@v3
-        with:
-          poetry-version: 2.1.1
-      - name: Run linter checkers in pets_app
-        run: make lintcheck DIR=pets_app
-      - name: Run unit tests
-        run: make unittest DIR=pets_app
-  users_app:
-    runs-on: ubuntu-latest
-    name: Verify users_app
-    strategy:
-      fail-fast: true
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.11
-      - name: Set up Poetry
-        uses: abatilo/actions-poetry@v3
-        with:
-          poetry-version: 2.1.1
-      - name: Run linter checkers in users_app
-        run: make lintcheck DIR=users_app
-      - name: Run unit tests
-        run: make unittest DIR=users_app
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+    
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: users_app/.venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+    
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: |
+        cd users_app
+        poetry install --no-interaction --no-root
+    
+    - name: Install project
+      run: |
+        cd users_app
+        poetry install --no-interaction
+    
+    - name: Run tests with coverage
+      run: |
+        cd users_app
+        poetry run pytest --cov=app --cov-report=term-missing --cov-fail-under=70
+      env:
+        DATABASE_URL: sqlite:///./test.db
+    
+    - name: Generate coverage report
+      run: |
+        cd users_app
+        poetry run coverage xml
+      env:
+        DATABASE_URL: sqlite:///./test.db
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: users_app/coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+>>>>>>> main
