@@ -1,37 +1,37 @@
 team:
-   name: <nombre del equipo>
+   name: Team16
    members:
-      - user: <usuario uniandes>
-        percentage: <0 a 100>
-      - user: <usuario uniandes>
-        percentage: <0 a 100>
-      - user: <usuario uniandes>
-        percentage: <0 a 100>
-      - user: <usuario uniandes>
-        percentage: <0 a 100>
-board: <link al dashboard de tareas del equipo>
-docs: <link al github pages del equipo>
+      - user: jm.bermudezv1@uniandes.edu.co
+        percentage: 10
+      - user: s.gelvezg@uniandes.edu.co
+        percentage: 30
+      - user: a.silvar@uniandes.edu.co
+        percentage: 30
+      - user: ja.tapia911@uniandes.edu.co
+        percentage: 30
+board: https://github.com/orgs/MISW-4301-Desarrollo-Apps-en-la-Nube/projects/288/views/1
+docs: https://solid-adventure-3jmwez8.pages.github.io/
 users_app:
-  folder: <nombre de la carpeta donde está la aplicación de usuarios>
-  image_name: <nombre de la imagen de la aplicación de usuarios, mismo que el nombre en el archivo de despliegue de k8s>
-  image_tag: <tag de la imagen de la aplicación de usuarios, por ejemplo: latest, v1.0.0. Debe ser el mismo que el tag en el archivo de despliegue de k8s>
+  folder: users_app
+  image_name: users_app
+  image_tag: 1.0.0
   authors:
-    - <usuario uniandes>
+    - ja.tapia911
 posts_app:
-  folder: <nombre de la carpeta donde está la aplicación de publicaciones>
-  image_name: <nombre de la imagen de la aplicación de publicaciones, mismo que el nombre en el archivo de despliegue de k8s>
+  folder: posts_app
+  image_name: posts_app
   image_tag: <tag de la imagen de la aplicación de publicaciones, por ejemplo: latest, v1.0.0. Debe ser el mismo que el tag en el archivo de despliegue de k8s>
   authors:
-    - <usuario uniandes>
+    - a.silvar@uniandes.edu.co
 offers_app:
-  folder: <nombre de la carpeta donde está la aplicación de ofertas>
-  image_name: <nombre de la imagen de la aplicación de ofertas, mismo que el nombre en el archivo de despliegue de k8s>
-  image_tag: <tag de la imagen de la aplicación de ofertas, por ejemplo: latest, v1.0.0. Debe ser el mismo que el tag en el archivo de despliegue de k8s>
+  folder: offers_app
+  image_name: offers_app
+  image_tag: 1.0.0
   authors:
-    - <usuario uniandes>
+    - jm.bermudezv1@uniandes.edu.co
 routes_app:
-  folder: <nombre de la carpeta donde está la aplicación de trayectos>
-  image_name: <nombre de la imagen de la aplicación de trayectos, mismo que el nombre en el archivo de despliegue de k8s>
-  image_tag: <tag de la imagen de la aplicación de trayectos, por ejemplo: latest, v1.0.0. Debe ser el mismo que el tag en el archivo de despliegue de k8s>
+  folder: routes_app
+  image_name: routes_app
+  image_tag: 1.0.0
   authors:
-    - <usuario uniandes>
+    - s.gelvezg@uniandes.edu.co
