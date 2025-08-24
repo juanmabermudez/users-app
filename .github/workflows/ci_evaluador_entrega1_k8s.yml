@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-### Archivo eliminado: no es necesario en la rama feat/apiUsuarios.
-=======
 name: CI - Kubernetes Manifests Validation (Entrega 1)
 
 on:
@@ -120,4 +117,3 @@ jobs:
         name: k8s-validation-report
         path: k8s-validation-report.md
         retention-days: 30
->>>>>>> main

@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-### Archivo eliminado: no es necesario en la rama feat/apiUsuarios.
-=======
 name: CI - Unit Tests and Coverage
 
 on:
@@ -67,4 +64,3 @@ jobs:
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: false
->>>>>>> main
