@@ -1,10 +1,12 @@
 from typing import List, Optional
+
+from sqlalchemy import select
 from sqlalchemy.orm import Session
+
 from domain.models.user import User
 from domain.ports.user_repository_port import UserRepositoryPort
 from errors import UserAlreadyExistsError, UserNotFoundError
 
-from sqlalchemy import select
 
 class PostgresUserRepositoryAdapter(UserRepositoryPort):
     """PostgreSQL implementation of UserRepository."""
