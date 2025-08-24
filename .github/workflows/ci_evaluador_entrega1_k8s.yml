@@ -112,7 +112,7 @@ jobs:
         cat k8s-validation-report.md
     
     - name: Upload validation report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: k8s-validation-report
         path: k8s-validation-report.md
