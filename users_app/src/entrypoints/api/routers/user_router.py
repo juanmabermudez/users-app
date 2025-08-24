@@ -1,28 +1,28 @@
 from datetime import datetime
 from typing import List
+
+from fastapi import APIRouter, Body, Depends, Header, HTTPException
+from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel
 
-from fastapi import APIRouter, Depends, HTTPException, Body, Header
-from fastapi.responses import JSONResponse, PlainTextResponse
-
 from assembly import (
-    build_create_user_use_case,
-    build_delete_user_use_case,
-    build_get_user_use_case,
-    build_get_users_use_case,
-    build_update_user_use_case,
     build_authenticate_user_use_case,
     build_count_users_use_case,
+    build_create_user_use_case,
+    build_delete_user_use_case,
     build_get_current_user_use_case,
+    build_get_user_use_case,
+    build_get_users_use_case,
     build_reset_users_use_case,
+    build_update_user_use_case,
 )
-from domain.models.user import User
-from domain.models.user_patch import UserPatch
 from domain.models.token_request import TokenRequest
 from domain.models.token_response import TokenResponse
-from domain.use_cases.base_use_case import BaseUseCase
+from domain.models.user import User
+from domain.models.user_patch import UserPatch
 from domain.use_cases.authenticate_user_use_case import AuthenticateUserUseCase
-from errors import UserNotFoundError, UserAlreadyExistsError
+from domain.use_cases.base_use_case import BaseUseCase
+from errors import UserAlreadyExistsError, UserNotFoundError
 
 router = APIRouter(prefix="/users")
 

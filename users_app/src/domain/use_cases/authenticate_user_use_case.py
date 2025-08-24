@@ -1,7 +1,8 @@
-from uuid import uuid4
 from datetime import datetime, timedelta
-from domain.ports.user_repository_port import UserRepositoryPort
+from uuid import uuid4
+
 from domain.models.token_response import TokenResponse
+from domain.ports.user_repository_port import UserRepositoryPort
 from errors import UserNotFoundError
 
 

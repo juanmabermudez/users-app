@@ -1,6 +1,7 @@
 from datetime import datetime
-from errors import UserNotFoundError
+
 from domain.use_cases.authenticate_user_use_case import AuthenticateUserUseCase
+from errors import UserNotFoundError
 
 
 class GetCurrentUserUseCase:

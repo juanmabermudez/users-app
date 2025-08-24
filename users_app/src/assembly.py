@@ -1,14 +1,14 @@
 from adapters.memory.user_repository_adapter import InMemoryUserRepositoryAdapter
+from domain.use_cases.authenticate_user_use_case import AuthenticateUserUseCase
 from domain.use_cases.base_use_case import BaseUseCase
+from domain.use_cases.count_users_use_case import CountUsersUseCase
 from domain.use_cases.create_user_use_case import CreateUserUseCase
 from domain.use_cases.delete_user_use_case import DeleteUserUseCase
+from domain.use_cases.get_current_user_use_case import GetCurrentUserUseCase
 from domain.use_cases.get_user_use_case import GetUserUseCase
 from domain.use_cases.get_users_use_case import GetAllUsersUseCase
-from domain.use_cases.update_user_use_case import UpdateUserUseCase
-from domain.use_cases.authenticate_user_use_case import AuthenticateUserUseCase
-from domain.use_cases.count_users_use_case import CountUsersUseCase
-from domain.use_cases.get_current_user_use_case import GetCurrentUserUseCase
 from domain.use_cases.reset_users_use_case import ResetUsersUseCase
+from domain.use_cases.update_user_use_case import UpdateUserUseCase
 
 # Instancia única global
 user_repository = InMemoryUserRepositoryAdapter()

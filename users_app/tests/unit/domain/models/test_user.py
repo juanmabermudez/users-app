@@ -1,9 +1,8 @@
 import pytest
+from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
 from domain.models.user import User
-
-from fastapi.testclient import TestClient
 from entrypoints.api.main import app
 
 
@@ -96,6 +95,7 @@ def test_user_model_inequality():
 
 import pytest
 from fastapi.testclient import TestClient
+
 from entrypoints.api.main import app
 
 client = TestClient(app)

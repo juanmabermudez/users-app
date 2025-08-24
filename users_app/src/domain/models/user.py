@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class User(BaseModel):
