@@ -1,16 +1,20 @@
 from enum import Enum
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
 
 from pydantic import BaseModel, EmailStr, Field
 
+Base = declarative_base()
 
-class User(BaseModel):
-    """User domain model."""
 
-    id: int | None = None
-    username: str = Field(min_length=1, description="Nombre de usuario")
-    password: str = Field(min_length=1, description="Contraseña del usuario")
-    email: EmailStr = Field(description="Correo electrónico del usuario")
-    dni: str = Field(min_length=1, description="Identificación")
-    fullName: str = Field(min_length=1, description="Nombre completo del usuario")
-    phoneNumber: str = Field(min_length=1, description="Número de teléfono")
-    status: str = Field(default="POR_VERIFICAR", description="Estado del usuario")
+class User(Base):
+    __tablename__ = "users"
+
+    id: int | None = Column(Integer, primary_key=True, index=True)
+    username: str = Column(String, unique=True, index=True, nullable=False)
+    password: str = Column(String, nullable=False)
+    email: EmailStr = Column(String, unique=True, index=True, nullable=False)
+    dni: str = Column(String, nullable=False)
+    fullName: str = Column(String, nullable=False)
+    phoneNumber: str = Column(String, nullable=False)
+    status: str = Column(String, nullable=False)

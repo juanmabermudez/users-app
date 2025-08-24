@@ -1,4 +1,5 @@
 from adapters.memory.user_repository_adapter import InMemoryUserRepositoryAdapter
+from adapters.postgres.user_repository_adapter import PostgresUserRepositoryAdapter
 from domain.use_cases.authenticate_user_use_case import AuthenticateUserUseCase
 from domain.use_cases.base_use_case import BaseUseCase
 from domain.use_cases.count_users_use_case import CountUsersUseCase
@@ -9,10 +10,14 @@ from domain.use_cases.get_user_use_case import GetUserUseCase
 from domain.use_cases.get_users_use_case import GetAllUsersUseCase
 from domain.use_cases.reset_users_use_case import ResetUsersUseCase
 from domain.use_cases.update_user_use_case import UpdateUserUseCase
+from config.database import SessionLocal
 
 # Instancia única global
 user_repository = InMemoryUserRepositoryAdapter()
 auth_use_case = AuthenticateUserUseCase(user_repository)
+
+db_session = SessionLocal()
+repository = PostgresUserRepositoryAdapter(db_session)
 
 
 def build_create_user_use_case() -> BaseUseCase:

@@ -165,8 +165,3 @@ def generate_token(
     except UserNotFoundError:
         return JSONResponse(status_code=404, content={"error": "Usuario no encontrado"})
 
-
-@router.get("/count")
-def count_users(use_case=Depends(build_count_users_use_case)):
-    count = use_case.execute()
-    return {"count": count}
