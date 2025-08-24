@@ -42,7 +42,7 @@ jobs:
         uses: abatilo/actions-poetry@v3
         with:
           poetry-version: 2.1.1
-      - name: Run linter checkers in pets_app
-        run: make lintcheck DIR=pets_app
+      - name: Run linter checkers in users_app
+        run: make lintcheck DIR=users_app
       - name: Run unit tests
-        run: make unittest DIR=pets_app
+        run: make unittest DIR=users_app
