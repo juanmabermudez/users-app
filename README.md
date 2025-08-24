@@ -1,3 +1,34 @@
+# Proyecto Microservicios DANN
+
+## Estructura de carpetas
+
+- `users_app/` - Microservicio de usuarios
+- `posts_app/` - Microservicio de publicaciones
+- `routes_app/` - Microservicio de rutas
+- `offers_app/` - Microservicio de ofertas
+- `k8s/` - Manifiestos de Kubernetes
+- `docs/` - Documentación técnica y diagramas
+
+## Despliegue local
+
+1. Instala Docker, Minikube, Poetry y Python 3.12+.
+2. Inicia Minikube:
+   ```sh
+   minikube start --driver=docker
+   ```
+3. Construye la imagen y despliega:
+   ```sh
+   docker build -t users-app-image:v1.0.0 users_app/
+   kubectl apply -f k8s/
+   ```
+4. Accede a los servicios:
+   ```sh
+   minikube service users-app-service
+   ```
+
+## CI/CD
+
+Los pipelines se ejecutan automáticamente en cada push a main o develop.
 # Proyecto de Aplicaciones Nativas en la Nube
 
 Este repositorio contiene la implementación de un sistema de microservicios para el curso de Aplicaciones Nativas en la Nube.

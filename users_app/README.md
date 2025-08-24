@@ -1,3 +1,29 @@
+# users_app
+
+Microservicio para la gestión de usuarios.
+
+## Estructura
+
+- `app/` - Código fuente principal
+- `tests/` - Pruebas unitarias
+- `Dockerfile` - Imagen de despliegue
+
+## Variables de entorno
+
+- `DATABASE_URL` - URL de conexión a PostgreSQL
+
+## Ejecución local
+
+```sh
+poetry install
+poetry run uvicorn app.main:app --reload
+```
+
+## Pruebas
+
+```sh
+poetry run pytest --cov=app --cov-report=term-missing --cov-fail-under=70
+```
 # Microservicio de Usuarios (users_app)
 
 ## Descripción
