@@ -51,6 +51,7 @@ def get_current_user(
     token = authorization.replace("Bearer ", "")
     try:
         user = use_case.execute(token)
+        print("Usuario retornado en /me:", user.id)
         return user
     except UserNotFoundError as e:
         raise HTTPException(status_code=401, detail=str(e))

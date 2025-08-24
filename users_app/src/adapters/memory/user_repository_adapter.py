@@ -9,10 +9,13 @@ class InMemoryUserRepositoryAdapter(UserRepositoryPort):
     """In memory implementation of UserRepository."""
 
     memory_store: Dict[int, User] = {}
+    _id_counter: int = 1  # <-- contador incremental
 
     def sequence(self) -> int:
         """Generate a new sequence number."""
-        return len(self.memory_store) + 1
+        current_id = self._id_counter
+        self._id_counter += 1
+        return current_id
 
     def create(self, user: User) -> User:
         """Create a new user."""
@@ -49,4 +52,4 @@ class InMemoryUserRepositoryAdapter(UserRepositoryPort):
     
     def clear_all(self):
         self.memory_store.clear()
-        self._id_counter = 1
+        self._id_counter = 1 

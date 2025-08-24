@@ -7,7 +7,7 @@ from errors import UserNotFoundError
 class AuthenticateUserUseCase:
     def __init__(self, user_repository: UserRepositoryPort):
         self.user_repository = user_repository
-        self.tokens = {}  # Opcional: almacena tokens en memoria
+        self.tokens = {}
 
     def execute(self, username: str, password: str) -> TokenResponse:
         # Busca el usuario por username
@@ -18,4 +18,6 @@ class AuthenticateUserUseCase:
         token = str(uuid4())
         expire_at = (datetime.utcnow() + timedelta(hours=1)).isoformat()
         self.tokens[token] = {"user_id": user.id, "expire_at": expire_at}
+        print(f"Autenticando usuario: {user.username}, id: {user.id}")
+        print(f"Token generado: {token}, user_id guardado: {user.id}")
         return TokenResponse(id=user.id, token=token, expireAt=expire_at)
