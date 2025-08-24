@@ -1,11 +1,11 @@
 @startuml
 
 ' Definición de entidades
-rectangle "User\n(usuario)" as User
-rectangle "Route\n(trayecto)" as Route
-rectangle "Post\n(publicación)" as Post
-rectangle "Offer\n(oferta)" as Offer
-rectangle "Score\n(utilidad)" as Score
+rectangle "User\n(usuario)" as users_app
+rectangle "Route\n(trayecto)" as routes_app
+rectangle "Post\n(publicación)" as posts_app
+rectangle "Offer\n(oferta)" as offers_app
+rectangle "Score\n(utilidad)" as scores_app
 
 ' Relaciones y cardinalidades
 Post -up-> "1" User
