@@ -1,0 +1,16 @@
+@startuml
+
+' Definición de entidades
+rectangle "User\n(usuario)" as User
+rectangle "Route\n(trayecto)" as Route
+rectangle "Post\n(publicación)" as Post
+rectangle "Offer\n(oferta)" as Offer
+rectangle "Score\n(utilidad)" as Score
+
+' Relaciones y cardinalidades
+Post -up-> "1" User
+Post -right-> "1" Route
+Offer "*" -left-> "1" Post
+Offer --> "1" Score
+
+@enduml
