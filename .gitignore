@@ -143,3 +143,11 @@ Thumbs.db
 
 # Test database
 test.db
+
+# PlantUML generated files
+docs/diagrams/*.png
+docs/diagrams/*.svg
+
+# Downloaded tools
+plantuml.jar
+kubectl
