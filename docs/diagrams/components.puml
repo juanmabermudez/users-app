@@ -1,3 +1,4 @@
 @startuml
 component users_app
+component posts_app
 @enduml

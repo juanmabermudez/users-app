@@ -98,4 +98,5 @@ offers_app_pod --> offers_db_svc
 offers_db_svc --> offers_db_pod : ":5432"
 
 component users_app
+component posts_app
 @enduml

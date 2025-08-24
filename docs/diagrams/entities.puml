@@ -31,6 +31,10 @@ entity "users" as users {
   createdAt: datetime
   updatedAt: datetime
 }
+
+entity "posts" as posts {
+  + id: string <<PK>>
+}
 !theme plain
 
 title Modelo de Entidades del Sistema
