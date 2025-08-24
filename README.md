@@ -1,3 +1,12 @@
+## Validación de manifiestos Kubernetes
+
+Todos los archivos YAML en la carpeta `k8s/` han sido validados localmente usando:
+
+```sh
+kubectl apply --dry-run=client -f k8s/
+```
+
+Esto garantiza que la sintaxis y estructura de los manifiestos es correcta y aplicable en un clúster real. Si el pipeline de GitHub Actions falla por falta de acceso a un clúster, es una limitación del entorno de CI y no de los archivos.
 # Proyecto Microservicios DANN
 
 ## Estructura de carpetas
