@@ -100,14 +100,17 @@ from entrypoints.api.main import app
 
 client = TestClient(app)
 
+
 @pytest.fixture(autouse=True)
 def reset_users():
     client.post("/users/reset")
+
 
 def test_health_check():
     response = client.get("/users/ping")
     assert response.status_code == 200
     assert response.text == "pong"
+
 
 def test_create_user():
     user_data = {
@@ -117,7 +120,7 @@ def test_create_user():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
     response = client.post("/users/", json=user_data)
     assert response.status_code == 201
@@ -132,13 +135,14 @@ def test_get_users():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
     client.post("/users/", json=user_data)
     response = client.get("/users/")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
     assert len(response.json()) == 1
+
 
 def test_get_user_by_id():
     user_data = {
@@ -148,7 +152,7 @@ def test_get_user_by_id():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
     create_resp = client.post("/users/", json=user_data)
     user_id = create_resp.json()["id"]
@@ -156,24 +160,23 @@ def test_get_user_by_id():
     assert response.status_code == 200
     assert response.json()["id"] == user_id
 
+
 def test_get_user_not_found():
     response = client.get("/users/999")
     assert response.status_code == 404
 
 
 def test_patch_user_not_found():
-    patch_data = {
-        "fullName": "Patched User"
-    }
+    patch_data = {"fullName": "Patched User"}
     response = client.patch("/users/999", json=patch_data)
     assert response.status_code == 404
 
+
 def test_patch_user_invalid_id():
-    patch_data = {
-        "fullName": "Patched User"
-    }
+    patch_data = {"fullName": "Patched User"}
     response = client.patch("/users/invalid_id", json=patch_data)
     assert response.status_code == 404
+
 
 def test_patch_user_no_fields():
     user_data = {
@@ -183,12 +186,13 @@ def test_patch_user_no_fields():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
     create_resp = client.post("/users/", json=user_data)
     user_id = create_resp.json()["id"]
     response = client.patch(f"/users/{user_id}", json={})
     assert response.status_code == 400
+
 
 def test_delete_user():
     user_data = {
@@ -198,7 +202,7 @@ def test_delete_user():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
     create_resp = client.post("/users/", json=user_data)
     user_id = create_resp.json()["id"]
@@ -208,9 +212,11 @@ def test_delete_user():
     response = client.get(f"/users/{user_id}")
     assert response.status_code == 404
 
+
 def test_delete_user_not_found():
     response = client.delete("/users/999")
     assert response.status_code == 404
+
 
 def test_count_users():
     user_data = {
@@ -220,7 +226,7 @@ def test_count_users():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
     client.post("/users/", json=user_data)
     response = client.get("/users/count")
@@ -230,20 +236,16 @@ def test_count_users():
 
 
 def test_authenticate_user_missing_fields():
-    auth_data = {
-        "username": "",
-        "password": ""
-    }
+    auth_data = {"username": "", "password": ""}
     response = client.post("/users/auth", json=auth_data)
     assert response.status_code == 400
 
+
 def test_authenticate_user_not_found():
-    auth_data = {
-        "username": "nouser",
-        "password": "nopassword"
-    }
+    auth_data = {"username": "nouser", "password": "nopassword"}
     response = client.post("/users/auth", json=auth_data)
     assert response.status_code == 404
+
 
 def test_get_current_user():
     user_data = {
@@ -253,13 +255,10 @@ def test_get_current_user():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
     client.post("/users/", json=user_data)
-    auth_data = {
-        "username": "testuser",
-        "password": "password123"
-    }
+    auth_data = {"username": "testuser", "password": "password123"}
     auth_resp = client.post("/users/auth", json=auth_data)
     token = auth_resp.json()["token"]
     headers = {"Authorization": f"Bearer {token}"}
@@ -274,14 +273,17 @@ def test_get_current_user():
     assert data["status"] == "POR_VERIFICAR"
     assert "id" in data
 
+
 def test_get_current_user_missing_token():
     response = client.get("/users/me")
     assert response.status_code == 403
+
 
 def test_get_current_user_invalid_token():
     headers = {"Authorization": "Bearer invalidtoken"}
     response = client.get("/users/me", headers=headers)
     assert response.status_code == 401
+
 
 def test_reset_users():
     user_data = {
@@ -291,7 +293,7 @@ def test_reset_users():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
     client.post("/users/", json=user_data)
     response = client.post("/users/reset")

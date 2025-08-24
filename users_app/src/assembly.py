@@ -56,4 +56,3 @@ def build_get_current_user_use_case() -> GetCurrentUserUseCase:
 
 def build_reset_users_use_case() -> ResetUsersUseCase:
     return ResetUsersUseCase(user_repository)
-

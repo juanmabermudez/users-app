@@ -21,7 +21,10 @@ class InMemoryUserRepositoryAdapter(UserRepositoryPort):
         """Create a new user."""
         # Validación de username y email únicos
         for existing_user in self.memory_store.values():
-            if existing_user.username == user.username or existing_user.email == user.email:
+            if (
+                existing_user.username == user.username
+                or existing_user.email == user.email
+            ):
                 raise UserAlreadyExistsError("Username or email already exists")
         user.id = self.sequence()
         self.memory_store[user.id] = user
@@ -49,7 +52,7 @@ class InMemoryUserRepositoryAdapter(UserRepositoryPort):
         user = self.memory_store[user_id]
         del self.memory_store[user_id]
         return user
-    
+
     def clear_all(self):
         self.memory_store.clear()
-        self._id_counter = 1 
+        self._id_counter = 1

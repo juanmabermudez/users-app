@@ -12,7 +12,7 @@ def valid_user_data():
         "dni": "12345678",
         "phoneNumber": "5551234",
         "status": "POR_VERIFICAR",
-        "password": "password123"
+        "password": "password123",
     }
 
 

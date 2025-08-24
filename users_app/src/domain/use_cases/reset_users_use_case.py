@@ -1,5 +1,6 @@
 from domain.ports.user_repository_port import UserRepositoryPort
 
+
 class ResetUsersUseCase:
     def __init__(self, user_repository: UserRepositoryPort):
         self.user_repository = user_repository

@@ -2,6 +2,7 @@ from datetime import datetime
 from errors import UserNotFoundError
 from domain.use_cases.authenticate_user_use_case import AuthenticateUserUseCase
 
+
 class GetCurrentUserUseCase:
     def __init__(self, auth_use_case: AuthenticateUserUseCase):
         self.auth = auth_use_case  # contiene repository y tokens

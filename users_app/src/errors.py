@@ -3,6 +3,8 @@ class UserNotFoundError(Exception):
 
     pass
 
+
 class UserAlreadyExistsError(Exception):
     """Raised when a user with the same username or email already exists."""
+
     pass

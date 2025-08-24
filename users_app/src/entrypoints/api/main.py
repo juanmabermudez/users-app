@@ -9,6 +9,7 @@ from fastapi.exceptions import RequestValidationError
 app = FastAPI(title=Settings.app_name)
 app.include_router(user_router)
 
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(
