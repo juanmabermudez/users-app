@@ -97,4 +97,5 @@ offers_app_svc --> offers_app_pod : "targetPort: xxxx"
 offers_app_pod --> offers_db_svc
 offers_db_svc --> offers_db_pod : ":5432"
 
+component users_app
 @enduml

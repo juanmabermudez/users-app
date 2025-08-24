@@ -15,6 +15,22 @@ Offer "*" -left-> "1" Post
 Offer --> "1" Score
 =======
 @startuml entities
+
+entity "users" as users {
+  + id: string <<PK>>
+  username: string <<unique>>
+  email: string <<unique>>
+  password: string
+  salt: string
+  token: string
+  status: string {POR_VERIFICAR, NO_VERIFICADO, VERIFICADO}
+  fullName: string
+  phoneNumber: string
+  dni: string
+  expireAt: datetime
+  createdAt: datetime
+  updatedAt: datetime
+}
 !theme plain
 
 title Modelo de Entidades del Sistema
